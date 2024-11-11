@@ -1,7 +1,7 @@
 import React from 'react';
 import SearchForm from '../components/SearchForm';
 import DestinationCard from '../components/DestinationCard';
-import TestimonialCard from '../components/TestimonialCard';
+import PostCard from '../components/PostCard';
 
 const HomePage: React.FC = () => {
   const popularDestinations = [
@@ -11,10 +11,10 @@ const HomePage: React.FC = () => {
     { id: 4, name: '서울', image: '/assets/seoul.jpg' },
   ];
 
-  const testimonials = [
-    { id: 1, name: '김서연', text: 'TravelBuddy 덕분에 좋은 동행을 만나 잊지 못할 여행을 했어요!' },
-    { id: 2, name: '이준호', text: '처음으로 혼자 여행을 가는 거라 걱정했는데, 좋은 친구들을 만나 즐거웠습니다.' },
-    { id: 3, name: '박지민', text: '여행 계획을 세우는 것부터 현지에서의 활동까지, 모든 것이 완벽했어요.' },
+  const latestPosts = [
+    { id: 1, title: '2024년 여름, 일본 여행의 꿀팁!', content: '이번 여름에 일본을 여행하며 알게 된 꿀팁을 공유합니다...', author: '김서연' },
+    { id: 2, title: '캐나다에서의 겨울 여행, 준비물 체크리스트', content: '겨울철 캐나다 여행을 준비할 때 필요한 모든 정보를 담았어요...', author: '이준호' },
+    { id: 3, title: '서울에서의 즐거운 주말 여행', content: '서울에서 즐길 수 있는 주말 여행 코스를 소개합니다...', author: '박지민' },
   ];
 
   return (
@@ -35,10 +35,10 @@ const HomePage: React.FC = () => {
       </section>
 
       <section>
-        <h2 className="text-3xl font-bold mb-6">여행자들의 후기</h2>
+        <h2 className="text-3xl font-bold mb-6">최신 글</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.map((testimonial) => (
-            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+          {latestPosts.map((post) => (
+            <PostCard key={post.id} post={post} />
           ))}
         </div>
       </section>

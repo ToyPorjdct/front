@@ -16,12 +16,11 @@ const LoginForm: React.FC = () => {
     try {
       const response = await login(email, password);
       localStorage.setItem('token', response.result);
-      setIsLoggedIn(true); // 로그인 상태 업데이트
+      setIsLoggedIn(true);
       console.log('로그인 성공', response);
-      navigate('/'); // '/'는 홈 페이지의 경로입니다.
+      navigate('/');
       
     } catch (error) {
-      console.error('로그인 실패', error);
       alert('로그인에 실패했습니다. 다시 시도해주세요.');
     }
   };

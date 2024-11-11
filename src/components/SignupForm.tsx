@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signup } from '../services/api';
-import { useSetRecoilState } from 'recoil';
-import { authState } from '../atoms/authState';
 
 const SignupForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +8,7 @@ const SignupForm: React.FC = () => {
     email: '',
     password: '',
   });
-  const [error, setError] = useState<string | null>(null); // 에러 메시지 상태 추가
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,11 +21,10 @@ const SignupForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null); // 폼 제출 시 에러 메시지 초기화
+    setError(null);
     try {
-      // signup API 호출
       await signup(formData.email, formData.password, formData.nickname);
-      navigate('/login'); // 메인 페이지로 리다이렉트
+      navigate('/login');
     } catch (error: any) {
       console.error('회원가입 실패', error);
       setError(error.message);
