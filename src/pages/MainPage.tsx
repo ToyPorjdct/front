@@ -1,7 +1,7 @@
 import React from 'react';
-import SearchForm from './SearchForm';
-import DestinationCard from './DestinationCard';
-import TestimonialCard from './TestimonialCard';
+import SearchForm from '../components/SearchForm';
+import DestinationCard from '../components/DestinationCard';
+import TestimonialCard from '../components/TestimonialCard';
 
 const HomePage: React.FC = () => {
   const popularDestinations = [
