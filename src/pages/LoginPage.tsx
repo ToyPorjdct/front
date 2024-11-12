@@ -1,7 +1,7 @@
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/form/LoginForm';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { authState } from '../atoms/authState';
+import { authState } from '../state/authState';
 import { useEffect } from 'react';
 
 const LoginPage: React.FC = () => {

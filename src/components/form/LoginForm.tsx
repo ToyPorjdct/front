@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { login } from '../services/api';
+import { login } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { authState } from '../atoms/authState';
+import { authState } from '../../state/authState';
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');

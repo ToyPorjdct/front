@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchForm from '../components/SearchForm';
+import SearchForm from '../components/form/SearchForm';
 import DestinationCard from '../components/DestinationCard';
 import PostCard from '../components/PostCard';
 

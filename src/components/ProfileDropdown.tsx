@@ -1,38 +1,52 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { authState } from '../atoms/authState';
+import { authState } from '../state/authState';
+import { getMember } from '../services/api'; 
 
 const ProfileDropdown: React.FC = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 메뉴 상태
-  const dropdownRef = useRef<HTMLDivElement>(null); // 드롭다운 메뉴 참조
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null); 
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(authState);
-
-  // 드롭다운 토글
+  const [nickname, setNickname] = useState<string>('');  
+  const [profileImage, setProfileImage] = useState<string>('./assets/profile.png');
+  
   const handleDropdownToggle = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    setIsDropdownOpen(prev => !prev);
   };
 
-  // 드롭다운 외부 클릭 시 닫히게 처리
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     };
-
     document.addEventListener('click', handleClickOutside);
-
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
   }, []);
 
-  // 로그아웃 처리
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
   };
+
+  const fetchUserData = async () => {
+    try {
+      const response = await getMember();
+      setNickname(response.result.nickname);
+      setProfileImage(response.result.profileImage || './assets/profile.png');  // 이미지가 있을 경우 업데이트
+    } catch (error) {
+      console.error("Error fetching user data", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchUserData();
+    }
+  }, [isLoggedIn]);
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -42,11 +56,11 @@ const ProfileDropdown: React.FC = () => {
         className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition"
       >
         <img
-          src="./assets/profile.png" // 프로필 이미지 (여기에 실제 이미지 경로 사용)
+          src={profileImage}
           alt="Profile"
           className="w-10 h-10 rounded-full"
         />
-        <span className="text-sm">유저명</span> {/* 여기에도 실제 유저명을 넣을 수 있음 */}
+        <span className="text-sm">{nickname}</span> 
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
