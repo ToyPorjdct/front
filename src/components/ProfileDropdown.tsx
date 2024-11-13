@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { authState } from '../state/authState';
+import { memberInfo } from '../state/authState';
 import { getMember } from '../services/api'; 
+
 
 const ProfileDropdown: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); 
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(authState);
-  const [nickname, setNickname] = useState<string>('');  
-  const [profileImage, setProfileImage] = useState<string>('./assets/profile.png');
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(memberInfo);
+  const [auth, setAuth] = useRecoilState(memberInfo);
   
   const handleDropdownToggle = () => {
     setIsDropdownOpen(prev => !prev);
@@ -32,22 +32,6 @@ const ProfileDropdown: React.FC = () => {
     setIsLoggedIn(false);
   };
 
-  const fetchUserData = async () => {
-    try {
-      const response = await getMember();
-      setNickname(response.result.nickname);
-      setProfileImage(response.result.profileImage || './assets/profile.png');  // 이미지가 있을 경우 업데이트
-    } catch (error) {
-      console.error("Error fetching user data", error);
-    }
-  };
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      fetchUserData();
-    }
-  }, [isLoggedIn]);
-
   return (
     <div className="relative" ref={dropdownRef}>
       {/* 프로필 이미지와 드롭다운 화살표 */}
@@ -56,11 +40,11 @@ const ProfileDropdown: React.FC = () => {
         className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition"
       >
         <img
-          src={profileImage}
+          src={auth.profileImage}
           alt="Profile"
           className="w-10 h-10 rounded-full"
         />
-        <span className="text-sm">{nickname}</span> 
+        <span className="text-sm">{auth.nickname}</span> 
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"

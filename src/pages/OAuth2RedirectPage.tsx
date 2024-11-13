@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { authState } from '../state/authState';
+import { memberInfo } from '../state/authState';
+import { getMember } from '../services/api';  // getMember 호출
 
 const OAuth2RedirectPage: React.FC = () => {
   const navigate = useNavigate();
-  const setIsLoggedIn = useSetRecoilState(authState);
+  const setAuthState = useSetRecoilState(memberInfo);
 
   useEffect(() => {
     fetch('http://localhost:8080/oauth2/validate', {
@@ -17,8 +18,21 @@ const OAuth2RedirectPage: React.FC = () => {
         console.log('token', token);
         if (token) {
           localStorage.setItem('token', token);
-          setIsLoggedIn(true);
-          navigate('/');
+
+          getMember()
+            .then((memberResponse) => {
+              setAuthState({
+                accessToken: token,
+                nickname: memberResponse.result.nickname,
+                profileImage:'./assets/profile.png',
+                email: memberResponse.result.email,
+              });
+              navigate('/');
+            })
+            .catch((error) => {
+              console.error('사용자 정보 가져오기 실패:', error);
+              navigate('/login');
+            });
         } else {
           navigate('/login');
         }
@@ -27,7 +41,7 @@ const OAuth2RedirectPage: React.FC = () => {
         console.error('Error during API request:', error);
         navigate('/login');
       });
-  }, [navigate]);
+  }, [navigate, setAuthState]);
 
   return (
     <div>

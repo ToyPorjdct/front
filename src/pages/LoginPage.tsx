@@ -1,20 +1,18 @@
 import LoginForm from '../components/form/LoginForm';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { authState } from '../state/authState';
 import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { memberInfo } from '../state/authState'; 
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const setIsLoggedIn = useSetRecoilState(authState);
+  const currentUser = useRecoilValue(memberInfo);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setIsLoggedIn(true); 
+    if (currentUser) {
       navigate('/');
     }
-  }, [navigate, setIsLoggedIn]);
+  }, [currentUser, navigate]);
 
   return (
     <div className="h-screen bg-gray-100 flex items-center justify-center">

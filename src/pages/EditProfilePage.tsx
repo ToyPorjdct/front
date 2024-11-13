@@ -1,12 +1,12 @@
 import React from 'react';
-import { authState } from '../state/authState';
+import { memberInfo } from '../state/authState';
 import { useRecoilState } from 'recoil';
 
 import EditProfileForm from '../components/form/EditProfileForm';
 
 const EditProfilePage: React.FC = () => {
 
-  const [isLoggedIn] = useRecoilState(authState);
+  const [isLoggedIn] = useRecoilState(memberInfo);
   if (!isLoggedIn) {
     window.location.href = '/';
   }

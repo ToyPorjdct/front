@@ -1,25 +1,30 @@
 import React, { useState } from 'react';
-import { login } from '../../services/api';
+import { login, getMember } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { authState } from '../../state/authState';
+import { memberInfo } from '../../state/authState';
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const setIsLoggedIn = useSetRecoilState(authState);
-
-  const navigate = useNavigate(); 
+  const setAuthState = useSetRecoilState(memberInfo);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await login(email, password);
-      localStorage.setItem('token', response.result);
-      setIsLoggedIn(true);
-      console.log('로그인 성공', response);
+      const loginResponse = await login(email, password);
+      const token = loginResponse.result;
+
+      const response = await getMember();
+      setAuthState({
+        accessToken: token,
+        nickname: response.result.nickname,
+        profileImage: './assets/profile.png',
+        email: response.result.email,
+      });
+
       navigate('/');
-      
     } catch (error) {
       alert('로그인에 실패했습니다. 다시 시도해주세요.');
     }

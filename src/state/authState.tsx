@@ -1,8 +1,17 @@
-// src/atoms/authState.ts
-import { atom } from 'recoil';
 
-export const authState = atom<boolean>({
-  key: 'authState', 
-  default: !!localStorage.getItem('token'),
+import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
+
+const { persistAtom } = recoilPersist();
+
+export const memberInfo = atom({
+  key: 'memberInfo',
+  default: {
+    accessToken: '',
+    nickname: '',
+    profileImage: '',
+    email: '',  
+  },
+  effects_UNSTABLE: [persistAtom],
 });
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { authState } from '../../state/authState';
+import { memberInfo } from '../../state/authState';
 import ProfileDropdown from '../ProfileDropdown';
 
 const Header: React.FC = () => {
-  const isLoggedIn = useRecoilValue(authState);
+  const isLoggedIn = useRecoilValue(memberInfo);
 
   const buttonClass = "text-gray-600 hover:text-blue-600 transition";
 
