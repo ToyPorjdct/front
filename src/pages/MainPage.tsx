@@ -17,11 +17,11 @@ const HomePage: React.FC = () => {
     id: index + 1,
     title: `여행 같이 가실분 구합니다~!!`,
     author: '닉네임',
-    authorProfilePic: 'https://randomuser.me/api/portraits/men/1.jpg', // 임의 프로필 사진
-    views: Math.floor(Math.random() * 1000), // 랜덤 조회수
-    comments: Math.floor(Math.random() * 100), // 랜덤 댓글수
-    deadline: `2024-12-${Math.floor(Math.random() * 31) + 1}`, // 랜덤 마감일
-    tags: ['비흡연자', '성별전체'], // 예시 태그
+    authorProfilePic: 'https://randomuser.me/api/portraits/men/1.jpg', 
+    views: Math.floor(Math.random() * 1000), 
+    comments: Math.floor(Math.random() * 100), 
+    deadline: `2024-12-${Math.floor(Math.random() * 31) + 1}`, 
+    tags: ['비흡연자', '성별전체'],
   }));
 
   return (

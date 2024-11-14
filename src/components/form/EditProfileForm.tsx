@@ -13,7 +13,7 @@ const ProfileEditForm: React.FC = () => {
 
   const handleUpdate = async () => {
     try {
-      await updateMember(nickname);
+      await updateMember(auth.accessToken, nickname);
       alert('회원 정보가 성공적으로 수정되었습니다.');
       setAuth({ ...auth, nickname });
     } catch (error) {

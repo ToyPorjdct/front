@@ -10,7 +10,7 @@ const LoginPage: React.FC = () => {
 
   useEffect(() => {
     if (currentUser) {
-      navigate('/');
+      window.location.href = '/';
     }
   }, [currentUser, navigate]);
 

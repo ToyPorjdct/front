@@ -9,8 +9,8 @@ interface Post {
   authorProfilePic: string;
   views: number;
   comments: number;
-  deadline: string; // 마감일 추가
-  tags: string[]; // 태그 추가
+  deadline: string;
+  tags: string[];
 }
 
 interface PostCardProps {
@@ -26,7 +26,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
       </div>
 
       {/* 제목 */}
-      <h3 className="text-xl font-bold text-gray-900 mb-3">{post.title}</h3> {/* 제목 크기 약간 줄임 */}
+      <h3 className="text-xl font-bold text-gray-900 mb-3">{post.title}</h3>
       
       {/* 여행지나라 태그 부분 */}
       <div className="mt-2">
@@ -46,7 +46,6 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
 
       {/* 작성자 정보, 조회수, 댓글 */}
       <div className="flex items-center justify-between text-sm text-gray-500 mt-4 border-t border-gray-300 pt-4">
-        {/* 작성자 프로필과 이름 */}
         <div className="flex items-center space-x-2">
           <img
             src={post.authorProfilePic}

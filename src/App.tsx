@@ -10,6 +10,7 @@ import Edi from './pages/EditProfilePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import EditProfilePage from './pages/EditProfilePage';
+import MainPage from './pages/MainPage';
 
 const App: React.FC = () => {
   return (
@@ -17,7 +18,7 @@ const App: React.FC = () => {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<TravelMatch />} />
+          <Route path="/" element={<MainPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/settings" element={<EditProfilePage />} />

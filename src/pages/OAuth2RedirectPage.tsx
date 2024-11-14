@@ -2,43 +2,39 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { memberInfo } from '../state/authState';
-import { getMember } from '../services/AuthApi';  // getMember 호출
+import { getMember } from '../services/AuthApi';  
+import { validateToken } from '../services/AuthApi';
 
 const OAuth2RedirectPage: React.FC = () => {
   const navigate = useNavigate();
   const setAuthState = useSetRecoilState(memberInfo);
 
   useEffect(() => {
-    fetch('http://localhost:8080/oauth2/validate', {
-      method: 'POST',
-      credentials: 'include',
-    })
-      .then((response) => {
-        const token = response.headers.get('Authorization');
-        console.log('token', token);
-        if (token) {
-          localStorage.setItem('token', token);
-
-          getMember()
-            .then((memberResponse) => {
-              setAuthState({
-                accessToken: token,
-                nickname: memberResponse.result.nickname,
-                profileImage:'./assets/profile.png',
-                email: memberResponse.result.email,
-              });
-              navigate('/');
-            })
-            .catch((error) => {
-              console.error('사용자 정보 가져오기 실패:', error);
-              navigate('/login');
-            });
-        } else {
+    validateToken()
+      .then((token) => {
+        if (!token) {
+          console.error('토큰이 없습니다.');
           navigate('/login');
+          return;
         }
+
+        getMember(token)
+          .then((memberResponse) => {
+            setAuthState({
+              accessToken: token,
+              nickname: memberResponse.result.nickname,
+              profileImage: './assets/profile.png',
+              email: memberResponse.result.email,
+            });
+            navigate('/');
+          })
+          .catch((error) => {
+            console.error('사용자 정보 가져오기 실패:', error);
+            navigate('/login');
+          });
       })
       .catch((error) => {
-        console.error('Error during API request:', error);
+        console.error('토큰 검증 오류:', error);
         navigate('/login');
       });
   }, [navigate, setAuthState]);

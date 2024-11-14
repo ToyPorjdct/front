@@ -21,7 +21,6 @@ const SignupForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null);
     try {
       await signup(formData.email, formData.password, formData.nickname);
       navigate('/login');
@@ -33,7 +32,7 @@ const SignupForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="text-red-500 text-sm text-center">{error}</div> // 에러 메시지 표시
+        <div className="text-red-500 text-sm text-center">{error}</div> 
       )}
       <div>
         <label htmlFor="nickname" className="block text-sm font-medium text-gray-700">닉네임</label>

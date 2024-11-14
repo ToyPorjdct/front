@@ -14,10 +14,7 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
     try {
       const loginResponse = await login(email, password);
-      
-      localStorage.setItem('token', loginResponse.result);
-
-      const memberResponse = await getMember();
+      const memberResponse = await getMember(loginResponse.result);
 
       setAuthState({
         accessToken: loginResponse.result,
