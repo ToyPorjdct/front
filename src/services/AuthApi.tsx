@@ -61,7 +61,7 @@ export async function getMember(token: string): Promise<ApiResponse> {
  */
 export async function updateMember(token: string, nickname: string): Promise<ApiResponse> {
   try {
-    const response = await axios.patch(
+    const response = await api.patch(
       `${process.env.REACT_APP_SEVER_URL}/member`,
       { nickname },
       {

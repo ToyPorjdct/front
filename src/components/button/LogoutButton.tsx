@@ -2,13 +2,17 @@
 import React from 'react';
 import { useSetRecoilState } from 'recoil';
 import { memberInfo } from '../../state/authState';
+import { useNavigate } from 'react-router-dom';
 
 const LogoutButton: React.FC = () => {
   const setAuth = useSetRecoilState(memberInfo);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     setAuth(null); 
+    navigate('/');
   };
+
 
   return (
     <button

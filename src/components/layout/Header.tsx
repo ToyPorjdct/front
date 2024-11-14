@@ -5,7 +5,8 @@ import { memberInfo } from '../../state/authState';
 import ProfileDropdown from '../ProfileDropdown';
 
 const Header: React.FC = () => {
-  const isLoggedIn = useRecoilValue(memberInfo);
+  const auth = useRecoilValue(memberInfo);
+  const isLoggedIn = auth?.accessToken ? true : false;
 
 
   const handleLogoClick = () => {

@@ -1,18 +1,17 @@
 import LoginForm from '../components/form/LoginForm';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { memberInfo } from '../state/authState'; 
 
 const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
   const currentUser = useRecoilValue(memberInfo);
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser?.accessToken) {
       window.location.href = '/';
     }
-  }, [currentUser, navigate]);
+  }, [currentUser]);
 
   return (
     <div className="h-screen bg-gray-100 flex items-center justify-center">

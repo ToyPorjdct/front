@@ -23,7 +23,7 @@ const LoginForm: React.FC = () => {
         email: memberResponse.result.email,
       });
 
-      navigate('/');
+      window.location.href = '/';
     } catch (error) {
       alert('로그인에 실패했습니다. 다시 시도해주세요.');
     }

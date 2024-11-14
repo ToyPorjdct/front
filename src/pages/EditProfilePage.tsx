@@ -1,15 +1,17 @@
 import React from 'react';
+import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 import { memberInfo } from '../state/authState';
-import { useRecoilState } from 'recoil';
-
 import EditProfileForm from '../components/form/EditProfileForm';
 
 const EditProfilePage: React.FC = () => {
-
-  const [isLoggedIn] = useRecoilState(memberInfo);
-  if (!isLoggedIn) {
-    window.location.href = '/';
-  }
+  const currentUser = useRecoilValue(memberInfo);
+  
+  useEffect(() => {
+    if (!currentUser?.accessToken) {
+      window.location.href = '/';
+    }
+  }, [currentUser]);
 
   return (
     <div className="max-w-md mx-auto mt-8">
