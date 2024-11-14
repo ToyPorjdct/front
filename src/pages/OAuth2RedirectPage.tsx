@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { memberInfo } from '../state/authState';
-import { getMember } from '../services/api';  // getMember 호출
+import { getMember } from '../services/AuthApi';  // getMember 호출
 
 const OAuth2RedirectPage: React.FC = () => {
   const navigate = useNavigate();

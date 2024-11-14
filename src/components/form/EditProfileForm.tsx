@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { memberInfo } from '../../state/authState';
-import { updateMember } from '../../services/api';
+import { updateMember } from '../../services/AuthApi';
 
 const ProfileEditForm: React.FC = () => {
   const [nickname, setNickname] = useState('');

@@ -15,7 +15,7 @@ const HomePage: React.FC = () => {
 
   const latestPosts = Array.from({ length: 10 }, (_, index) => ({
     id: index + 1,
-    title: `일본 같이 가실분 구합니다~!!`,
+    title: `여행 같이 가실분 구합니다~!!`,
     author: '닉네임',
     authorProfilePic: 'https://randomuser.me/api/portraits/men/1.jpg', // 임의 프로필 사진
     views: Math.floor(Math.random() * 1000), // 랜덤 조회수

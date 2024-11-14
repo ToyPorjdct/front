@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signup } from '../../services/api';
+import { signup } from '../../services/AuthApi';
 
 const SignupForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -26,7 +26,6 @@ const SignupForm: React.FC = () => {
       await signup(formData.email, formData.password, formData.nickname);
       navigate('/login');
     } catch (error: any) {
-      console.error('회원가입 실패', error);
       setError(error.message);
     }
   };

@@ -2,18 +2,34 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { memberInfo } from '../state/authState';
-import { getMember } from '../services/api'; 
-
+import { getMember } from '../services/AuthApi';
 
 const ProfileDropdown: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); 
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(memberInfo);
-  const [auth, setAuth] = useRecoilState(memberInfo);
+  const [auth, setAuth] = useRecoilState(memberInfo); 
   
   const handleDropdownToggle = () => {
     setIsDropdownOpen(prev => !prev);
   };
+
+  useEffect(() => {
+    const fetchMemberInfo = async () => {
+      try {
+        const response = await getMember();
+        setAuth({
+          ...auth,
+          nickname: response.result.nickname,
+          profileImage: './assets/profile.png',
+          email: response.result.email,
+        });
+      } catch (error) {
+      }
+    };
+
+    fetchMemberInfo(); 
+  }, [setAuth]);
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -29,7 +45,7 @@ const ProfileDropdown: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    setIsLoggedIn(false);
+    setAuth(null);
   };
 
   return (
@@ -40,11 +56,11 @@ const ProfileDropdown: React.FC = () => {
         className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition"
       >
         <img
-          src={auth.profileImage}
+          src={auth?.profileImage || '/default-profile.png'}
           alt="Profile"
           className="w-10 h-10 rounded-full"
         />
-        <span className="text-sm">{auth.nickname}</span> 
+        <span className="text-sm">{auth.nickname}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"

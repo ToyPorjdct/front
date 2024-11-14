@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { login, getMember } from '../../services/api';
+import { login, getMember } from '../../services/AuthApi';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { memberInfo } from '../../state/authState';
@@ -14,14 +14,16 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
     try {
       const loginResponse = await login(email, password);
-      const token = loginResponse.result;
+      
+      localStorage.setItem('token', loginResponse.result);
 
-      const response = await getMember();
+      const memberResponse = await getMember();
+
       setAuthState({
-        accessToken: token,
-        nickname: response.result.nickname,
+        accessToken: loginResponse.result,
+        nickname: memberResponse.result.nickname,
         profileImage: './assets/profile.png',
-        email: response.result.email,
+        email: memberResponse.result.email,
       });
 
       navigate('/');
