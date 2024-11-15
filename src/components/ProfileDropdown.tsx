@@ -3,6 +3,8 @@ import { useRecoilState } from 'recoil';
 import { memberInfo } from '../state/authState';
 import { getMember } from '../services/AuthApi';
 import LogoutButton from './button/LogoutButton';
+import { Link } from 'react-router-dom';
+
 
 const ProfileDropdown: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -68,19 +70,19 @@ const ProfileDropdown: React.FC = () => {
         <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
           <ul className="space-y-2 p-2">
             <li>
-              <a href="/my-posts" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition">
+                <Link to="/my-posts" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition">
                 내 작성글
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/my-interests" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition">
+                <Link to="/my-interests" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition">
                 내 관심글
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition">
+                <Link to="/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition">
                 설정
-              </a>
+              </Link>
             </li>
             <li>
               <LogoutButton />
