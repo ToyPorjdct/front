@@ -1,17 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faComment } from '@fortawesome/free-solid-svg-icons';
-
-interface Post {
-  id: number;
-  title: string;
-  author: string;
-  authorProfilePic: string;
-  views: number;
-  comments: number;
-  deadline: string;
-  tags: string[];
-}
+import { Post } from '../../types/Post.d';
 
 interface PostCardProps {
   post: Post;
@@ -20,22 +10,29 @@ interface PostCardProps {
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
   return (
     <div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 ease-in-out transform hover:scale-105 border border-gray-300">
-      {/* 마감일 표시 */}
-      <div className="text-sm text-gray-500 mb-2">
-        <span>마감일 | {post.deadline}</span>
-      </div>
-
-      {/* 제목 */}
-      <h3 className="text-xl font-bold text-gray-900 mb-3">{post.title}</h3>
       
-      {/* 여행지나라 태그 부분 */}
-      <div className="mt-2">
-        <span className="inline-block bg-blue-100 text-blue-800 text-sm px-4 py-1 rounded-full border border-blue-300">
-          여행나라
+      {/* 여행 날짜 표시 */}
+      <div className="text-sm text-gray-500 mb-2">
+        <span>
+          여행 일정 | {post.startDate} ~ {post.endDate}
         </span>
       </div>
 
-      {/* 추가적인 태그 부분 */}
+      {/* 제목 */}
+      <h3 className="text-xl font-bold text-gray-900 mb-3">
+        <span className="block overflow-hidden" style={{display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2, minHeight: '3rem', lineHeight: '1.5rem',}}>
+          {post.title}
+        </span>
+      </h3>
+    
+      {/* 목적지 */}
+      <div className="mt-2">
+        <span className="inline-block bg-blue-100 text-blue-800 text-sm px-4 py-1 rounded-full border border-blue-300">
+          {post.destination}
+        </span>
+      </div>
+
+      {/* 태그 */}
       <div className="mt-2 flex flex-wrap space-x-2">
         {post.tags.map((tag, index) => (
           <span key={index} className="inline-block bg-gray-100 text-gray-800 text-sm px-4 py-1 rounded-full border border-gray-300">
@@ -44,18 +41,26 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
         ))}
       </div>
 
-      {/* 작성자 정보, 조회수, 댓글 */}
+      {/* 모집인원 */}
+      <div className="text-sm text-gray-500 mt-2 flex items-center justify-between">
+        <div className={`text-xs py-1 px-3 rounded-full ${post.isClosed ? 'bg-yellow-200 text-yellow-800' : 'bg-green-200 text-green-800'}`}>
+          {post.isClosed ? '모집완료' : '모집중'}
+        </div>
+        <div className="flex items-center">
+          <div className="text-lg font-bold text-blue-600 mr-2">
+            {post.maxParticipant}명
+          </div>
+        </div>
+      </div>
+
+      {/* 작성자 정보 */}
       <div className="flex items-center justify-between text-sm text-gray-500 mt-4 border-t border-gray-300 pt-4">
         <div className="flex items-center space-x-2">
-          <img
-            src={post.authorProfilePic}
-            alt={post.author}
-            className="w-10 h-10 rounded-full border-2 border-gray-300"
-          />
-          <span className="font-semibold text-gray-900">{post.author}</span>
+          <img src={post.profileImage} alt='프로필 이미지' className="w-10 h-10 rounded-full border-2 border-gray-300"/>
+          <span className="font-semibold text-gray-900">{post.nickname}</span>
         </div>
 
-        {/* 조회수와 댓글 수 */}
+        {/* 조회수, 댓글 수 */}
         <div className="flex items-center space-x-4">
           <div className="flex items-center text-gray-600">
             <FontAwesomeIcon icon={faEye} className="mr-1" />
@@ -63,7 +68,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
           </div>
           <div className="flex items-center text-gray-600">
             <FontAwesomeIcon icon={faComment} className="mr-1" />
-            <span>{post.comments}</span>
+            <span>{post.likes}</span>
           </div>
         </div>
       </div>

@@ -1,13 +1,6 @@
 import axios from 'axios';
 import api from './api';
-
-
-export interface ApiResponse<T = any> {
-  status: number;
-  result: T;
-  message: string;
-}
-
+import { ApiResponse } from '../types/ApiResponse.d';
 
 /**
  * 회원가입

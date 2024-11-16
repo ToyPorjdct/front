@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signup } from '../../services/AuthApi';
+import { signup } from '../../services/authApi';
 
 const SignupForm: React.FC = () => {
   const [formData, setFormData] = useState({

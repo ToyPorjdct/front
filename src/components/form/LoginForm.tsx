@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { login, getMember } from '../../services/AuthApi';
+import { login, getMember } from '../../services/authApi';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { memberInfo } from '../../state/authState';

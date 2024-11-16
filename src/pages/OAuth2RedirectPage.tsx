@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { memberInfo } from '../state/authState';
-import { getMember } from '../services/AuthApi';  
-import { validateToken } from '../services/AuthApi';
+import { getMember } from '../services/authApi';  
+import { validateToken } from '../services/authApi';
 
 const OAuth2RedirectPage: React.FC = () => {
   const navigate = useNavigate();
