@@ -11,6 +11,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import EditProfilePage from './pages/EditProfilePage';
 import MainPage from './pages/MainPage';
+import CreatePost from './pages/CreatePost';
 
 const App: React.FC = () => {
   return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/settings" element={<EditProfilePage />} />
           <Route path="/oauth2/redirect" element={<OAuth2RedirectPage />} />
+          <Route path="/create-post" element={<CreatePost />} />
         </Routes>
         <Footer />
       </Router>
