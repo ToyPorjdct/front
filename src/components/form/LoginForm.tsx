@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { login, getMember } from '../../services/authApi';
-import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { memberInfo } from '../../state/authState';
 
@@ -8,7 +7,6 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const setAuthState = useSetRecoilState(memberInfo);
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

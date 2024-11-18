@@ -5,7 +5,6 @@ const SearchForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // 여기에 검색 로직을 구현합니다
     console.log('Searching for:', destination);
   };
 
