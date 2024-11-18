@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signup } from '../../services/authApi';
+import { SignupFormType } from '../../types/SignupFormType';
 
 const SignupForm: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [payload, setFormData] = useState<SignupFormType>({
     nickname: '',
     email: '',
     password: '',
-  });
+  })
+
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -22,7 +24,7 @@ const SignupForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await signup(formData.email, formData.password, formData.nickname);
+      await signup(payload);
       navigate('/login');
     } catch (error: any) {
       setError(error.message);
@@ -40,7 +42,7 @@ const SignupForm: React.FC = () => {
           type="text"
           id="nickname"
           name="nickname"
-          value={formData.nickname}
+          value={payload.nickname}
           onChange={handleChange}
           required
           className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
@@ -52,7 +54,7 @@ const SignupForm: React.FC = () => {
           type="email"
           id="email"
           name="email"
-          value={formData.email}
+          value={payload.email}
           onChange={handleChange}
           required
           className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
@@ -64,7 +66,7 @@ const SignupForm: React.FC = () => {
           type="password"
           id="password"
           name="password"
-          value={formData.password}
+          value={payload.password}
           onChange={handleChange}
           required
           className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"

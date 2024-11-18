@@ -1,13 +1,14 @@
 import axios from 'axios';
 import api from './api';
 import { ApiResponse } from '../types/ApiResponse.d';
+import { SignupFormType } from '../types/SignupFormType';
 
 /**
  * 회원가입
  */
-export async function signup(email: string, password: string, nickname: string): Promise<ApiResponse> {
+export async function signup(payload: SignupFormType): Promise<ApiResponse> {
   try {
-    const response = await axios.post(`${process.env.REACT_APP_SEVER_URL}/auth/join`, { email, password, nickname });
+    const response = await axios.post(`${process.env.REACT_APP_SEVER_URL}/auth/join`, {payload});
 
     if (response.data.status === 409) {
       throw new Error('이미 사용 중인 이메일 입니다.');
