@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { memberInfo } from '../../state/authState';
-import ProfileDropdown from '../ProfileDropdown';
+import ProfileDropdown from './ProfileDropdown';
 
 const Header: React.FC = () => {
   const auth = useRecoilValue(memberInfo);

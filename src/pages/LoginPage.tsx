@@ -41,15 +41,8 @@ const LoginPage: React.FC = () => {
             </div>
 
             <div className="mt-4">
-              <a
-                href="http://localhost:8080/oauth2/authorization/kakao" 
-                className="w-full block"
-              >
-                <img
-                  src="./assets/kakao.png" 
-                  alt="카카오로 로그인"
-                  className="w-42 mx-auto"
-                />
+              <a href={process.env.REACT_APP_KAKAO_URL} className="w-full block">
+                <img src="./assets/kakao.png" alt="카카오로 로그인" className="w-42 mx-auto"/>
               </a>
             </div>
           </div>

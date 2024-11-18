@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
-import { memberInfo } from '../state/authState';
-import { getMember } from '../services/authApi';
-import LogoutButton from './button/LogoutButton';
+import { memberInfo } from '../../state/authState';
+import { getMember } from '../../services/authApi';
+import LogoutButton from '../button/LogoutButton';
 import { Link } from 'react-router-dom';
 
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import PostCard from '../components/card/PostCard';
-import DestinationCard from '../components/card/DestinationCard';
+import PostCard from '../components/main/PostCard';
+import DestinationCard from '../components/main/DestinationCard';
 import SearchForm from '../components/form/SearchForm';
 import { Post } from '../types/Post.d';
 import { getPostList } from '../services/postApi';
