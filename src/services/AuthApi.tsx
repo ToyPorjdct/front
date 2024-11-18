@@ -2,13 +2,14 @@ import axios from 'axios';
 import api from './api';
 import { ApiResponse } from '../types/ApiResponse.d';
 import { SignupFormType } from '../types/SignupFormType';
+import { LoginFormType } from '../types/LoginFormType';
 
 /**
  * 회원가입
  */
 export async function signup(payload: SignupFormType): Promise<ApiResponse> {
   try {
-    const response = await axios.post(`${process.env.REACT_APP_SEVER_URL}/auth/join`, {payload});
+    const response = await axios.post(`${process.env.REACT_APP_SEVER_URL}/auth/join`, payload);
 
     if (response.data.status === 409) {
       throw new Error('이미 사용 중인 이메일 입니다.');
@@ -23,9 +24,9 @@ export async function signup(payload: SignupFormType): Promise<ApiResponse> {
 /**
  * 로그인
  */
-export async function login(email: string, password: string): Promise<ApiResponse> {
+export async function login(payload: LoginFormType): Promise<ApiResponse> {
   try {
-    const response = await axios.post(`${process.env.REACT_APP_SEVER_URL}/auth/login`, { email, password });
+    const response = await axios.post(`${process.env.REACT_APP_SEVER_URL}/auth/login`, payload);
     return response.data;
   } catch (error: any) {
     throw new Error(error.message);

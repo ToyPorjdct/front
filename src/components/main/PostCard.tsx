@@ -1,10 +1,10 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faComment } from '@fortawesome/free-solid-svg-icons';
-import { Post } from '../../types/Post.d';
+import { PostType } from '../../types/PostType';
 
 interface PostCardProps {
-  post: Post;
+  post: PostType;
 }
 
 const PostCard: React.FC<PostCardProps> = ({ post }) => {

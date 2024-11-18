@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import PostCard from '../components/main/PostCard';
 import DestinationCard from '../components/main/DestinationCard';
 import SearchForm from '../components/form/SearchForm';
-import { Post } from '../types/Post.d';
+import { PostType } from '../types/PostType';
 import { getPostList } from '../services/postApi';
 
 const MainPage: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostType[]>([]);
 
   const popularDestinations = [
     { id: 1, name: '일본', image: './assets/japan.jpg' },

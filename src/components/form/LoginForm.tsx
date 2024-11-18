@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import { login, getMember } from '../../services/authApi';
 import { useSetRecoilState } from 'recoil';
 import { memberInfo } from '../../state/authState';
+import { LoginFormType } from '../../types/LoginFormType';
 
 const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [payload, setFormData] = useState<LoginFormType>({
+    email: '',
+    password: '',
+  });
+
   const setAuthState = useSetRecoilState(memberInfo);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const loginResponse = await login(email, password);
+      const loginResponse = await login(payload);
       const memberResponse = await getMember(loginResponse.result);
 
       setAuthState({
@@ -25,6 +29,14 @@ const LoginForm: React.FC = () => {
     } catch (error) {
       alert('로그인에 실패했습니다. 다시 시도해주세요.');
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -41,8 +53,8 @@ const LoginForm: React.FC = () => {
             autoComplete="email"
             required
             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={payload.email}
+            onChange={handleInputChange}
           />
         </div>
       </div>
@@ -59,8 +71,8 @@ const LoginForm: React.FC = () => {
             autoComplete="current-password"
             required
             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={payload.password}
+            onChange={handleInputChange}
           />
         </div>
       </div>
