@@ -20,7 +20,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
 
       {/* 제목 */}
       <h3 className="text-xl font-bold text-gray-900 mb-3">
-        <span className="block overflow-hidden" style={{display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2, minHeight: '3rem', lineHeight: '1.5rem',}}>
+        <span className="block overflow-hidden" style={{ display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2, minHeight: '3rem', lineHeight: '1.5rem' }}>
           {post.title}
         </span>
       </h3>
@@ -33,10 +33,20 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
       </div>
 
       {/* 태그 */}
-      <div className="mt-2 flex flex-wrap space-x-2">
-        {post.tags.map((tag, index) => (
-          <span key={index} className="inline-block bg-gray-100 text-gray-800 text-sm px-4 py-1 rounded-full border border-gray-300">
-            {tag}
+      <div className="mt-2 flex gap-2" style={{ flexWrap: 'nowrap', overflow: 'hidden' }}>
+        {post.tags.slice(0, 3).map((tag, index) => (
+          <span
+            key={index}
+            className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full border border-gray-300 text-center"
+            style={{
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              flex: '1 0 calc(33.333% - 0.5rem)',
+              maxWidth: 'calc(33.333% - 0.5rem)',
+            }}
+          >
+            {tag.length > 8 ? `${tag.slice(0, 8)}...` : tag}
           </span>
         ))}
       </div>
@@ -55,13 +65,13 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
 
       {/* 작성자 정보 */}
       <div className="flex items-center justify-between text-sm text-gray-500 mt-4 border-t border-gray-300 pt-4">
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 w-1/2">
           <img src={post.profileImage} alt='프로필 이미지' className="w-10 h-10 rounded-full border-2 border-gray-300"/>
           <span className="font-semibold text-gray-900">{post.nickname}</span>
         </div>
 
         {/* 조회수, 댓글 수 */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 w-1/2 justify-end">
           <div className="flex items-center text-gray-600">
             <FontAwesomeIcon icon={faEye} className="mr-1" />
             <span>{post.views}</span>

@@ -9,15 +9,16 @@ const CreateTravelPostForm: React.FC = () => {
   const [auth] = useRecoilState(memberInfo);
 
   const [postForm, setPost] = useState<PostForm>({
-    title: ' ',
-    description: ' ',
-    destination: ' ',
+    title: '',
+    description: '',
+    destination: '',
     maxParticipant: 0,
-    startDate: ' ',
-    endDate: ' ',
+    startDate: '',
+    endDate: '',
     tagNames: [],
   });
 
+  const [tagInput, setTagInput] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -25,6 +26,27 @@ const CreateTravelPostForm: React.FC = () => {
     setPost(prevPost => ({
       ...prevPost,
       [name]: name === 'maxParticipant' ? parseInt(value) : value,
+    }));
+  };
+
+  const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTagInput(e.target.value);
+  };
+
+  const handleAddTag = () => {
+    if (tagInput && !postForm.tagNames.includes(tagInput)) {
+      setPost(prevPost => ({
+        ...prevPost,
+        tagNames: [...prevPost.tagNames, tagInput],
+      }));
+      setTagInput('');
+    }
+  };
+
+  const handleRemoveTag = (tag: string) => {
+    setPost(prevPost => ({
+      ...prevPost,
+      tagNames: prevPost.tagNames.filter(t => t !== tag),
     }));
   };
 
@@ -144,11 +166,51 @@ const CreateTravelPostForm: React.FC = () => {
         ></textarea>
       </div>
 
-      {/* 버튼 */}
+      {/* 태그 입력 */}
+      <div>
+        <label htmlFor="tagNames" className="block text-lg font-semibold text-gray-800 mb-2">태그 추가</label>
+        <div className="flex items-center space-x-2">
+          <input
+            type="text"
+            id="tagNames"
+            value={tagInput}
+            onChange={handleTagInputChange}
+            placeholder="태그를 입력하세요"
+            className="w-full rounded-l-md border border-gray-300 py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+          />
+          <button
+            type="button"
+            onClick={handleAddTag}
+            className="px-6 py-2 bg-gray-500 text-white rounded-r-md shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">
+            +
+          </button>
+        </div>
+        <div className="mt-2">
+          {postForm.tagNames.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {postForm.tagNames.map((tagNames, index) => (
+                <span
+                  key={index}
+                  className="bg-blue-100 text-blue-800 px-4 py-1 rounded-full text-sm flex items-center space-x-2">
+                  <span>{tagNames}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveTag(tagNames)}
+                    className="text-xs text-blue-500 hover:text-blue-700 transition-all duration-200">
+                    X
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 제출 버튼 */}
       <div className="flex justify-end">
         <button
           type="submit"
-          className="px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
+          className="px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full shadow-lg hover:from-blue-600 hover:to-indigo-700 transform transition duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50">
           작성 완료
         </button>
       </div>
