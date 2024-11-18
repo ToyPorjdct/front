@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PostForm } from '../../types/PostForm.d';
+import { PostFormType } from '../../types/PostFormType';
 import { createPost } from '../../services/postApi';
 import { useRecoilState } from 'recoil';
 import { memberInfo } from '../../state/authState';
@@ -8,7 +8,7 @@ import { memberInfo } from '../../state/authState';
 const CreateTravelPostForm: React.FC = () => {
   const [auth] = useRecoilState(memberInfo);
 
-  const [postForm, setPost] = useState<PostForm>({
+  const [payload, setPost] = useState<PostFormType>({
     title: '',
     description: '',
     destination: '',
@@ -34,7 +34,7 @@ const CreateTravelPostForm: React.FC = () => {
   };
 
   const handleAddTag = () => {
-    if (tagInput && !postForm.tagNames.includes(tagInput)) {
+    if (tagInput && !payload.tagNames.includes(tagInput)) {
       setPost(prevPost => ({
         ...prevPost,
         tagNames: [...prevPost.tagNames, tagInput],
@@ -53,12 +53,12 @@ const CreateTravelPostForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const startDate = new Date(postForm.startDate).toISOString();
-    const endDate = new Date(postForm.endDate).toISOString();
+    const startDate = new Date(payload.startDate).toISOString();
+    const endDate = new Date(payload.endDate).toISOString();
 
     try {
       await createPost(auth.accessToken, {
-        ...postForm,
+        ...payload,
         startDate,
         endDate,
       });
@@ -84,7 +84,7 @@ const CreateTravelPostForm: React.FC = () => {
           type="text"
           id="title"
           name="title"
-          value={postForm.title}
+          value={payload.title}
           onChange={handleChange}
           required
           placeholder="예: 제주도 여행 동행 모집합니다!"
@@ -99,7 +99,7 @@ const CreateTravelPostForm: React.FC = () => {
           type="text"
           id="destination"
           name="destination"
-          value={postForm.destination}
+          value={payload.destination}
           onChange={handleChange}
           required
           placeholder="예: 제주도, 부산, 일본 등"
@@ -115,7 +115,7 @@ const CreateTravelPostForm: React.FC = () => {
             type="date"
             id="startDate"
             name="startDate"
-            value={postForm.startDate}
+            value={payload.startDate}
             onChange={handleChange}
             required
             className="mt-2 block w-full rounded-md border border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
@@ -127,7 +127,7 @@ const CreateTravelPostForm: React.FC = () => {
             type="date"
             id="endDate"
             name="endDate"
-            value={postForm.endDate}
+            value={payload.endDate}
             onChange={handleChange}
             required
             className="mt-2 block w-full rounded-md border border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
@@ -141,7 +141,7 @@ const CreateTravelPostForm: React.FC = () => {
         <select
           id="maxParticipant"
           name="maxParticipant"
-          value={postForm.maxParticipant}
+          value={payload.maxParticipant}
           onChange={handleChange}
           className="mt-2 block w-full rounded-md border border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
         >
@@ -158,7 +158,7 @@ const CreateTravelPostForm: React.FC = () => {
           id="description"
           name="description"
           rows={5}
-          value={postForm.description}
+          value={payload.description}
           onChange={handleChange}
           required
           placeholder="여행 일정, 동행 조건 등을 자세히 적어주세요!"
@@ -186,9 +186,9 @@ const CreateTravelPostForm: React.FC = () => {
           </button>
         </div>
         <div className="mt-2">
-          {postForm.tagNames.length > 0 && (
+          {payload.tagNames.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              {postForm.tagNames.map((tagNames, index) => (
+              {payload.tagNames.map((tagNames, index) => (
                 <span
                   key={index}
                   className="bg-blue-100 text-blue-800 px-4 py-1 rounded-full text-sm flex items-center space-x-2">

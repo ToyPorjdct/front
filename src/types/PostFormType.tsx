@@ -1,4 +1,4 @@
-export interface PostForm {
+export interface PostFormType {
     title: string;
     description: string;
     destination: string;
