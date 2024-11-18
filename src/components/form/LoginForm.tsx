@@ -21,7 +21,7 @@ const LoginForm: React.FC = () => {
       setAuthState({
         accessToken: loginResponse.result,
         nickname: memberResponse.result.nickname,
-        profileImage: './assets/profile.png',
+        profileImage: memberResponse.result.profileImage,
         email: memberResponse.result.email,
       });
 

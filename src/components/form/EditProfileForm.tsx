@@ -5,29 +5,28 @@ import { getMember, updateMember } from '../../services/authApi';
 
 const ProfileEditForm: React.FC = () => {
   const [auth, setAuth] = useRecoilState(memberInfo);
-  const [nickname, setNickname] = useState('');
+  const [nickname, setNickname] = useState<string>('');
 
-  // 회원 상태 업데이트
   useEffect(() => {
     const fetchMemberInfo = async () => {
       try {
         const response = await getMember(auth.accessToken);
-        setAuth(
-          {
-            accessToken: auth.accessToken,
-            profileImage: auth.profileImage, // 추후 응답값에서 받아와 수정
-            nickname: response.result.nickname,
-            email: response.result.email,
-          }
-        );
-        setNickname(nickname);
+        setAuth({
+          accessToken: auth.accessToken,
+          profileImage: response.result.profileImage,
+          nickname: response.result.nickname,
+          email: response.result.email,
+        });
+        setNickname(response.result.nickname);
       } catch (error) {
         console.error("회원 정보 조회 실패:", error);
       }
     };
 
-    fetchMemberInfo();
-  }, [auth.accessToken]);
+    if (auth.accessToken) {
+      fetchMemberInfo();
+    }
+  }, [auth.accessToken, setAuth]);
 
   const handleUpdate = async () => {
     try {
@@ -39,7 +38,6 @@ const ProfileEditForm: React.FC = () => {
     }
   };
 
-
   return (
     <form className="space-y-6 mb-10">
       <h1 className="text-2xl font-bold text-center mb-4">정보 수정</h1>
@@ -50,7 +48,7 @@ const ProfileEditForm: React.FC = () => {
             id="nickname"
             name="nickname"
             type="text"
-            value={auth.nickname}
+            value={nickname} 
             onChange={(e) => setNickname(e.target.value)}
             required
             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -64,7 +62,7 @@ const ProfileEditForm: React.FC = () => {
             id="email"
             name="email"
             type="email"
-            value={auth.email || ''}
+            value={auth.email}
             readOnly
             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 bg-gray-100 focus:outline-none sm:text-sm"
           />
