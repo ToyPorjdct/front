@@ -40,10 +40,10 @@ const MainPage: React.FC = () => {
         <p className="text-xl mb-8">새로운 친구와 함께 잊지 못할 추억을 만들어보세요</p>
         <SearchForm />
         
-        {/* 모집글 작성 링크 - Styled button */}
+        {/* 모집글 작성 */}
         <div className="mt-8">
           <a
-            href="/create-post"  // Set your route to the page where users can create a new post
+            href="/create-post"
             className="inline-block bg-blue-600 text-white text-xl font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
           >
             모집글 작성하기
