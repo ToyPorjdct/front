@@ -23,7 +23,7 @@ const ProfileDropdown: React.FC = () => {
           setAuth({
             ...auth,
             nickname: response.result.nickname,
-            profileImage: './assets/profile.png',
+            profileImage: response.result.profileImage,
             email: response.result.email,
           });
         } catch (error) {

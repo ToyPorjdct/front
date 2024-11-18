@@ -23,7 +23,7 @@ const OAuth2RedirectPage: React.FC = () => {
             setAuthState({
               accessToken: token,
               nickname: memberResponse.result.nickname,
-              profileImage: './assets/profile.png',
+              profileImage: memberResponse.result.profileImage,
               email: memberResponse.result.email,
             });
             navigate('/');
