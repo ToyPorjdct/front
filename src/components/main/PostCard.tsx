@@ -66,8 +66,8 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
       {/* 작성자 정보 */}
       <div className="flex items-center justify-between text-sm text-gray-500 mt-4 border-t border-gray-300 pt-4">
         <div className="flex items-center space-x-2 w-1/2">
-          <img src={post.profileImage} alt='프로필 이미지' className="w-10 h-10 rounded-full border-2 border-gray-300"/>
-          <span className="font-semibold text-gray-900">{post.nickname}</span>
+          <img src={post.author.profileImage} alt='프로필 이미지' className="w-10 h-10 rounded-full border-2 border-gray-300"/>
+          <span className="font-semibold text-gray-900">{post.author.nickname}</span>
         </div>
 
         {/* 조회수, 댓글 수 */}
