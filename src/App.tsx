@@ -11,6 +11,7 @@ import EditProfilePage from './pages/EditProfilePage';
 import MainPage from './pages/MainPage';
 import CreatePost from './pages/CreatePost';
 import PrivateRoute from './components/PrivateRoute';
+import PostDetailPage from './pages/PostDetailPage';
 
 const App: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ const App: React.FC = () => {
           <Route path="/oauth2/redirect" element={<OAuth2RedirectPage />} />
           <Route path="/settings" element={<PrivateRoute> <EditProfilePage /> </PrivateRoute>} />
           <Route path="/create-post" element={<PrivateRoute> <CreatePost /></PrivateRoute>} />
+          <Route path="/post/:id" element={<PostDetailPage />} />
         </Routes>
         <Footer />
       </Router>

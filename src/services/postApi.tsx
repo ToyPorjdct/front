@@ -1,4 +1,5 @@
 import axios from 'axios';
+import api from './api';
 import { ApiResponse } from '../types/ApiResponse.d';
 import { PostFormType } from '../types/PostFormType';
   
@@ -21,7 +22,7 @@ export async function getPostList(): Promise<ApiResponse> {
  */
 export async function createPost(token: string, payload: PostFormType): Promise<ApiResponse> {
   try {
-    const response = await axios.post(`${process.env.REACT_APP_SEVER_URL}/board`, payload, {
+    const response = await api.post(`${process.env.REACT_APP_SEVER_URL}/board`, payload, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },
