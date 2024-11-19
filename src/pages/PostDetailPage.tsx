@@ -1,27 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { getPostDetail } from '../services/postApi';
 import TravelPostDetail from '../components/post/PostDetail';
 import Comments from '../components/post/Comment';
-
-interface TravelPost {
-  id: number;
-  title: string;
-  author: {
-    name: string;
-    profileImage: string;
-  };
-  createdAt: string;
-  maxParticipants: number;
-  currentParticipants: number;
-  startDate: string;
-  endDate: string;
-  content: string;
-  views: number;
-  likes: number;
-  tags: string[];
-  image: string;
-  destination: string;
-}
+import { PostDetailType } from '../types/PostDetailType';
 
 interface Comment {
   id: number;
@@ -33,46 +15,59 @@ interface Comment {
 const PostDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
-  const post: TravelPost = {
-    id: 1,
-    title: "제주도 힐링 여행",
-    author: {
-      name: "제주사랑",
-      profileImage: "https://via.placeholder.com/40",
-    },
-    createdAt: "2023-07-01",
-    maxParticipants: 5,
-    currentParticipants: 3,
-    startDate: "2023-08-15",
-    endDate: "2023-08-18",
-    content: "아름다운 제주도에서 4일간의 힐링 여행을 떠나요. 올레길 트레킹, 맛있는 해산물 요리, 그리고 아름다운 해변에서의 휴식이 기다리고 있습니다. 함께 제주도의 아름다움을 만끽하고 잊지 못할 추억을 만들어보아요!",
-    views: 120,
-    likes: 15,
-    tags: ["제주도", "힐링", "트레킹", "해변"],
-    image: "/placeholder.svg?height=400&width=800",
-    destination: "제주도",
-  };
-
-  const comments: Comment[] = [
+  const [post, setPost] = useState<PostDetailType | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [comments, setComments] = useState<Comment[]>([
     {
       id: 1,
-      author: "여행자A",
-      content: "정말 멋진 여행 계획이네요! 저도 참여하고 싶어요.",
-      createdAt: "2023-07-02T10:30:00Z",
+      author: '여행자A',
+      content: '정말 멋진 여행 계획이네요! 저도 참여하고 싶어요.',
+      createdAt: '2023-07-02T10:30:00Z',
     },
     {
       id: 2,
-      author: "제주도민B",
-      content: "제주도 현지인입니다. 좋은 장소 추천해 드릴 수 있어요!",
-      createdAt: "2023-07-03T14:15:00Z",
+      author: '제주도민B',
+      content: '제주도 현지인입니다. 좋은 장소 추천해 드릴 수 있어요!',
+      createdAt: '2023-07-03T14:15:00Z',
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    const fetchPostDetail = async () => {
+      try {
+        if (id) {
+          const postData = await getPostDetail(Number(id));
+          setPost(postData.result);
+          setLoading(false);
+        }
+      } catch (error) {
+        setError('게시글을 불러오는 데 실패했습니다.');
+        setLoading(false);
+      }
+    };
+
+    fetchPostDetail();
+  }, [id]);
+
+  // 로딩 중에는 로딩 메시지 또는 로딩 스피너를 표시
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
+
+  // 에러가 발생한 경우 오류 메시지를 표시
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen py-12">
       <div className="max-w-4xl mx-auto">
-        <TravelPostDetail post={post} />
-        <Comments postId={post.id} comments={comments} />
+        {/* 게시글이 로딩된 경우에만 TravelPostDetail을 렌더링 */}
+        {post && <TravelPostDetail post={post} />}
+        
+        {/* 댓글이 로딩되었으므로, 기본 댓글 데이터를 렌더링 */}
+        {comments.length > 0 && <Comments postId={post?.id ?? 0} comments={comments} />}
       </div>
     </div>
   );

@@ -17,6 +17,22 @@ export async function getPostList(): Promise<ApiResponse> {
   }
 }
 
+
+/**
+ * 게시글 상세
+ * @param id 게시글 ID
+ */
+export async function getPostDetail(id: number): Promise<ApiResponse> {
+  try {
+    const response = await axios.get(`${process.env.REACT_APP_SEVER_URL}/board/${id}`);
+    return response.data;
+  } catch (error: any) {
+    console.error('Error fetching post detail:', error);
+    throw new Error(error?.message || 'An error occurred while fetching post detail');
+  }
+}
+
+
 /**
  * 게시글 작성
  */
