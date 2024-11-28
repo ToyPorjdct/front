@@ -76,7 +76,7 @@ const TravelPostDetail: React.FC<TravelPostDetailProps> = ({ post }) => {
 
         <div className="flex justify-between items-center">
           <Link 
-            to="/travels" 
+            to="/" 
             className="px-6 py-3 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition duration-300"
           >
             목록으로
