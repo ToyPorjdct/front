@@ -7,6 +7,7 @@ const { persistAtom } = recoilPersist();
 export const memberInfo = atom({
   key: 'memberInfo',
   default: {
+    id: '',
     accessToken: '',
     nickname: '',
     profileImage: '',

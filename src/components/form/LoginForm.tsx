@@ -19,6 +19,7 @@ const LoginForm: React.FC = () => {
       const memberResponse = await getMember(loginResponse.result);
 
       setAuthState({
+        id: memberResponse.result.id,
         accessToken: loginResponse.result,
         nickname: memberResponse.result.nickname,
         profileImage: memberResponse.result.profileImage,

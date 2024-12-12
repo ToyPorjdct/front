@@ -21,6 +21,7 @@ const OAuth2RedirectPage: React.FC = () => {
         getMember(token)
           .then((memberResponse) => {
             setAuthState({
+              id: memberResponse.result.id,
               accessToken: token,
               nickname: memberResponse.result.nickname,
               profileImage: memberResponse.result.profileImage,
