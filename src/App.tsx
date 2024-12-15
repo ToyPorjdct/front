@@ -12,6 +12,8 @@ import MainPage from './pages/MainPage';
 import CreatePost from './pages/CreatePost';
 import PrivateRoute from './components/PrivateRoute';
 import PostDetailPage from './pages/PostDetailPage';
+import ChatPage from './pages/ChatPage';
+
 
 const App: React.FC = () => {
   return (
@@ -26,6 +28,7 @@ const App: React.FC = () => {
           <Route path="/settings" element={<PrivateRoute> <EditProfilePage /> </PrivateRoute>} />
           <Route path="/create-post" element={<PrivateRoute> <CreatePost /></PrivateRoute>} />
           <Route path="/posts/:id" element={<PostDetailPage />} />
+          <Route path="/chat" element={<ChatPage />} />
         </Routes>
         <Footer />
       </Router>
