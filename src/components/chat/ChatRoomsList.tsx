@@ -4,8 +4,6 @@ import { Users, Search, MessageCircle, Settings } from 'lucide-react'
 interface ChatRoom {
   id: number
   name: string
-  lastMessage: string
-  unread: number
 }
 
 interface ChatRoomsListProps {
@@ -46,13 +44,7 @@ const ChatRoomsList: React.FC<ChatRoomsListProps> = ({ chatRooms, activeRoom, se
               </div>
               <div className="flex-1">
                 <h3 className="text-sm font-semibold text-gray-800">{room.name}</h3>
-                <p className="text-xs text-gray-500 mt-1">{room.lastMessage}</p>
               </div>
-              {room.unread > 0 && (
-                <span className="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                  {room.unread}
-                </span>
-              )}
             </div>
           </li>
         ))}
