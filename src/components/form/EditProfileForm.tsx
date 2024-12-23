@@ -12,6 +12,7 @@ const ProfileEditForm: React.FC = () => {
       try {
         const response = await getMember(auth.accessToken);
         setAuth({
+          id: response.result.id,
           accessToken: auth.accessToken,
           profileImage: response.result.profileImage,
           nickname: response.result.nickname,
