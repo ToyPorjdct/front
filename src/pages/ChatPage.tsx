@@ -71,6 +71,7 @@ const ChatPage: React.FC = () => {
         id: response.chatId,
         content: response.message,
         senderId: response.author.id,
+        profileImage: response.author.profileImage,
         createdAt: response.createdAt,
       }))
       setMessages(fetchedMessages)
@@ -128,7 +129,8 @@ const ChatPage: React.FC = () => {
         id: newMessage.chatId,
         content: newMessage.message,
         senderId: newMessage.author.id,
-        timestamp: newMessage.createdAt,
+        profileImage: newMessage.author.profileImage,
+        createdAt: newMessage.createdAt,
       }]
     }
     return prevMessages

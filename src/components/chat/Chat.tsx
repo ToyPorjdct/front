@@ -5,7 +5,8 @@ interface Message {
   id: string
   senderId: number
   content: string
-  timestamp: string
+  createdAt: string
+  profileImage: string // 프로필 이미지 추가
 }
 
 interface ChatProps {
@@ -26,8 +27,8 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
     setNewMessage('')
   }
 
-  const formatTime = (timestamp: string) => {
-    const date = new Date(timestamp)
+  const formatTime = (createdAt: string) => {
+    const date = new Date(Date.parse(createdAt)) 
     return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
   }
 
@@ -45,14 +46,14 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
       </div>
 
       {/* 내부 메시지 영역 */}
-              <div
-          ref={messageContainerRef}
-          className="p-4 space-y-4 flex-1"
-          style={{
-            maxHeight: 'calc(100% - 120px)',
-            overflowY: messages.length === 0 ? 'hidden' : 'auto',
-          }}
-        >
+      <div
+        ref={messageContainerRef}
+        className="p-4 space-y-4 flex-1"
+        style={{
+          maxHeight: 'calc(100% - 120px)',
+          overflowY: messages.length === 0 ? 'hidden' : 'auto',
+        }}
+      >
         {/* 메시지가 없을 때에도 공간을 유지하도록 수정 */}
         {messages.length === 0 ? (
           <div className="flex justify-center items-center text-center text-gray-500 h-full">
@@ -63,10 +64,14 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
             const isMine = message.senderId === currentUserId
             return (
               <div key={message.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
-                {!isMine && (
+                {!isMine && message.profileImage && (
                   <div className="flex-shrink-0 mr-3">
-                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                      <User className="w-5 h-5 text-gray-500" />
+                    <div className="w-8 h-8 rounded-full overflow-hidden">
+                      <img
+                        src={message.profileImage} // 프로필 이미지 URL 사용
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   </div>
                 )}
@@ -81,7 +86,7 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
                     {message.content}
                   </div>
                   <div className="flex items-center mt-1 space-x-2 text-xs text-gray-500">
-                    <span>{formatTime(message.timestamp)}</span>
+                    <span>{formatTime(message.createdAt)}</span>
                   </div>
                 </div>
               </div>
