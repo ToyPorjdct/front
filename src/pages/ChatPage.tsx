@@ -10,8 +10,8 @@ const ChatPage: React.FC = () => {
   const [auth] = useRecoilState(memberInfo)
   const [messages, setMessages] = useState<any[]>([])
   const [sentMessages, setSentMessages] = useState<any[]>([])
-  const [activeRoom, setActiveRoom] = useState<number>(1) // 기본값을 1로 설정
-  const [chatRooms, setChatRooms] = useState<any[]>([]) // 타입을 any[]로 설정
+  const [activeRoom, setActiveRoom] = useState<number | null>(null) 
+  const [chatRooms, setChatRooms] = useState<any[]>([])
   const clientRef = useRef<Client | null>(null)
 
   // 채팅방 목록 조회
@@ -49,7 +49,7 @@ const ChatPage: React.FC = () => {
 
   // 이전 메시지 조회 
   const fetchMessages = async () => {
-    if (!auth.accessToken || activeRoom <= 0) {
+    if (!auth.accessToken || activeRoom === null || activeRoom <= 0){
       return
     }
 
@@ -87,7 +87,7 @@ const ChatPage: React.FC = () => {
   }, [auth.accessToken])
 
   useEffect(() => {
-    if (!auth.accessToken) return
+    if (!auth.accessToken || activeRoom === null) return
 
     fetchMessages()
 
@@ -121,7 +121,7 @@ const ChatPage: React.FC = () => {
     return () => {
       stompClient.deactivate()
     }
-  }, [auth.accessToken, activeRoom]) // activeRoom 변경 시 메시지 로드
+  }, [auth.accessToken, activeRoom]) 
 
   const addMessageIfUnique = (prevMessages: any[], newMessage: any) => {
     if (!prevMessages.some((msg) => msg.id === newMessage.chatId)) {
@@ -156,24 +156,35 @@ const ChatPage: React.FC = () => {
       <div className="flex flex-col lg:flex-row h-screen">
         <ChatRoomsList
           chatRooms={chatRooms}
-          activeRoom={activeRoom}
+          activeRoom={activeRoom !== null ? activeRoom : -1}
           setActiveRoom={setActiveRoom}
         />
 
-        <div className="w-full lg:w-2/3 xl:w-3/4 bg-gray-50 flex flex-col">
-          <div className="p-4 border-b border-gray-200 bg-white">
-            <h2 className="text-xl font-semibold text-gray-800">
-              {chatRooms.find(room => room.id === activeRoom)?.name}
-            </h2>
+        {activeRoom !== null ? (
+          <div className="w-full lg:w-2/3 xl:w-3/4 bg-gray-50 flex flex-col">
+            <div className="p-4 border-b border-gray-200 bg-white">
+              <h2 className="text-xl font-semibold text-gray-800">
+                {chatRooms.find(room => room.id === activeRoom)?.name}
+              </h2>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4">
+              <Chat
+                currentUserId={auth.id}
+                messages={messages}
+                onSendMessage={handleSendMessage}
+              />
+            </div>
           </div>
-          <div className="flex-1 overflow-y-auto p-4">
-            <Chat
-              currentUserId={auth.id}
-              messages={messages}
-              onSendMessage={handleSendMessage}
-            />
+        ) : (
+          <div className="w-full lg:w-2/3 xl:w-3/4 bg-gray-50 flex flex-col">
+            <div className="p-4 border-b border-gray-200 bg-white">
+              <h2 className="text-xl font-semibold text-gray-800">채팅방을 선택해주세요.</h2>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4">
+              <p className="text-center text-gray-500">채팅방을 선택하면 대화가 시작됩니다.</p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

@@ -6,7 +6,7 @@ interface Message {
   senderId: number
   content: string
   createdAt: string
-  profileImage: string // 프로필 이미지 추가
+  profileImage: string
 }
 
 interface ChatProps {
@@ -32,7 +32,6 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
     return date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
   }
 
-  // 새 메시지가 추가될 때마다 스크롤을 맨 아래로 이동시킴
   useEffect(() => {
     if (messageContainerRef.current && messagesEndRef.current) {
       messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight
@@ -54,7 +53,6 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
           overflowY: messages.length === 0 ? 'hidden' : 'auto',
         }}
       >
-        {/* 메시지가 없을 때에도 공간을 유지하도록 수정 */}
         {messages.length === 0 ? (
           <div className="flex justify-center items-center text-center text-gray-500 h-full">
             <span>메시지가 없습니다.</span>
@@ -68,7 +66,7 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
                   <div className="flex-shrink-0 mr-3">
                     <div className="w-8 h-8 rounded-full overflow-hidden">
                       <img
-                        src={message.profileImage} // 프로필 이미지 URL 사용
+                        src={message.profileImage}
                         alt="Profile"
                         className="w-full h-full object-cover"
                       />
@@ -93,7 +91,6 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
             )
           })
         )}
-        {/* 이 div는 스크롤을 맨 아래로 끌어주는 역할 */}
         <div ref={messagesEndRef} />
       </div>
 

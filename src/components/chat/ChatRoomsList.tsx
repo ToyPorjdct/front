@@ -1,5 +1,5 @@
 import React from 'react'
-import { Users, Search, MessageCircle, Settings } from 'lucide-react'
+import { Users, MessageCircle } from 'lucide-react'
 
 interface ChatRoom {
   id: number
@@ -20,14 +20,6 @@ const ChatRoomsList: React.FC<ChatRoomsListProps> = ({ chatRooms, activeRoom, se
           <MessageCircle className="w-6 h-6 mr-2" />
           채팅
         </h2>
-        <div className="mt-4 relative">
-          <input
-            type="text"
-            placeholder="채팅방 검색"
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-        </div>
       </div>
       <ul className="flex-1 overflow-y-auto">
         {chatRooms.map((room) => (
@@ -49,12 +41,6 @@ const ChatRoomsList: React.FC<ChatRoomsListProps> = ({ chatRooms, activeRoom, se
           </li>
         ))}
       </ul>
-      <div className="p-4 border-t border-gray-200">
-        <button className="w-full flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition duration-150 ease-in-out">
-          <Settings className="w-5 h-5 mr-2" />
-          설정
-        </button>
-      </div>
     </div>
   )
 }
