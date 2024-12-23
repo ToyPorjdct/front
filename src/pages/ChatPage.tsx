@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Client } from '@stomp/stompjs'
 import SockJS from 'sockjs-client'
-import Chat from '../components/Chat'
+import Chat from '../components/chat/Chat'
 import { memberInfo } from '../state/authState'
 import { useRecoilState } from 'recoil'
+import ChatRoomsList from '../components/chat/ChatRoomsList'
 
 const ChatPage: React.FC = () => {
     const [auth] = useRecoilState(memberInfo)
     const [messages, setMessages] = useState<any[]>([])
     const [sentMessages, setSentMessages] = useState<any[]>([])
-    const roomId = 1
+    const [activeRoom, setActiveRoom] = useState(1)
+    const roomId = activeRoom
     const clientRef = useRef<Client | null>(null)
 
     const fetchMessages = async () => {
@@ -107,15 +109,35 @@ const ChatPage: React.FC = () => {
         }
     }
 
+    const chatRooms = [
+        { id: 1, name: '제주도 여행 동행', lastMessage: '언제 출발하시나요?', unread: 2 },
+        { id: 2, name: '서울 맛집 투어', lastMessage: '강남역에서 만나요!', unread: 0 },
+        { id: 3, name: '부산 해운대 여행', lastMessage: '숙소 예약했어요.', unread: 1 },
+    ]
+
     return (
-        <div className="min-h-screen bg-gray-100 py-12 overflow-hidden">
-            <div className="max-w-2xl mx-auto">
-                {/* 채팅 UI만 렌더링 */}
-                <Chat
-                    currentUserId={auth.id}
-                    messages={messages}
-                    onSendMessage={handleSendMessage}
+        <div className="container mx-auto px-4 py-8">
+            <div className="flex flex-col lg:flex-row h-screen">
+                <ChatRoomsList 
+                    chatRooms={chatRooms} 
+                    activeRoom={activeRoom} 
+                    setActiveRoom={setActiveRoom} 
                 />
+
+                <div className="w-full lg:w-2/3 xl:w-3/4 bg-gray-50 flex flex-col">
+                    <div className="p-4 border-b border-gray-200 bg-white">
+                        <h2 className="text-xl font-semibold text-gray-800">
+                            {chatRooms.find(room => room.id === activeRoom)?.name}
+                        </h2>
+                    </div>
+                    <div className="flex-1 overflow-y-auto p-4">
+                        <Chat
+                            currentUserId={auth.id}
+                            messages={messages}
+                            onSendMessage={handleSendMessage}
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     )
