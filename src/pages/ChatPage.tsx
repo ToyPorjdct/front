@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil'
 import Chat from '../components/chat/Chat'
 import { memberInfo } from '../state/authState'
 import ChatRoomsList from '../components/chat/ChatRoomsList'
+import { getChatRooms, getPreMessages } from '../services/chatApi'
 
 const ChatPage: React.FC = () => {
   const [auth] = useRecoilState(memberInfo)
@@ -15,24 +16,10 @@ const ChatPage: React.FC = () => {
   const clientRef = useRef<Client | null>(null)
 
   // 채팅방 목록 조회
-  const fetchChatRooms = async () => {
-    if (!auth.accessToken) {
-      return
-    }
+  const fetchChatRoomsData = async () => {
+    if (!auth.accessToken) return
     try {
-      const response = await fetch('http://localhost:8080/chat', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.accessToken}`,
-        },
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch chat rooms')
-      }
-
-      const data = await response.json()
+      const data = await getChatRooms(auth.accessToken)
       if (data.status === 200) {
         const rooms = data.result.map((room: any) => ({
           id: room.roomId,
@@ -47,31 +34,18 @@ const ChatPage: React.FC = () => {
     }
   }
 
-  // 이전 메시지 조회 
-  const fetchMessages = async () => {
-    if (!auth.accessToken || activeRoom === null || activeRoom <= 0){
-      return
-    }
+  // 이전 메시지 조회
+  const fetchMessagesData = async () => {
+    if (!auth.accessToken || activeRoom === null || activeRoom <= 0) return
 
     try {
-      const response = await fetch(`http://localhost:8080/chat/room/${activeRoom}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.accessToken}`,
-        },
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch messages')
-      }
-
-      const data = await response.json()
+      const data = await getPreMessages(auth.accessToken, activeRoom)
       const fetchedMessages = data.result.map((response: any) => ({
         id: response.chatId,
         content: response.message,
         senderId: response.author.id,
         profileImage: response.author.profileImage,
+        nickname: response.author.nickname,
         createdAt: response.createdAt,
       }))
       setMessages(fetchedMessages)
@@ -82,18 +56,16 @@ const ChatPage: React.FC = () => {
 
   useEffect(() => {
     if (auth.accessToken) {
-      fetchChatRooms()
+      fetchChatRoomsData()
     }
   }, [auth.accessToken])
 
   useEffect(() => {
     if (!auth.accessToken || activeRoom === null) return
-
-    fetchMessages()
+    fetchMessagesData()
 
     const stompClient = new Client({
-      brokerURL: 'ws://localhost:8080/ws',
-      webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+      webSocketFactory: () => new SockJS(`${process.env.REACT_APP_SEVER_URL}/ws`),
       connectHeaders: {
         Authorization: `Bearer ${auth.accessToken}`,
       },
@@ -121,7 +93,7 @@ const ChatPage: React.FC = () => {
     return () => {
       stompClient.deactivate()
     }
-  }, [auth.accessToken, activeRoom]) 
+  }, [auth.accessToken, activeRoom])
 
   const addMessageIfUnique = (prevMessages: any[], newMessage: any) => {
     if (!prevMessages.some((msg) => msg.id === newMessage.chatId)) {
@@ -130,26 +102,31 @@ const ChatPage: React.FC = () => {
         content: newMessage.message,
         senderId: newMessage.author.id,
         profileImage: newMessage.author.profileImage,
+        nickname: newMessage.author.nickname,
         createdAt: newMessage.createdAt,
       }]
     }
     return prevMessages
   }
-
   const handleSendMessage = (content: string) => {
     if (clientRef.current && content.trim()) {
-      const newMessage = { content }
-      setSentMessages((prevSent) => [...prevSent, newMessage])
-
+      // 새로운 메시지 추가
+      const newMessage = { content };
+      setSentMessages((prevSent) => [...prevSent, newMessage]);
+  
+      // STOMP 메시지 발행
       clientRef.current.publish({
         destination: `/pub/chat.${activeRoom}`,
-        body: JSON.stringify({ message: content }),
+        body: JSON.stringify({
+          message: content,
+          roomId: activeRoom, 
+        }),
         headers: {
           Authorization: `Bearer ${auth.accessToken}`,
         },
-      })
+      });
     }
-  }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -163,9 +140,6 @@ const ChatPage: React.FC = () => {
         {activeRoom !== null ? (
           <div className="w-full lg:w-2/3 xl:w-3/4 bg-gray-50 flex flex-col">
             <div className="p-4 border-b border-gray-200 bg-white">
-              <h2 className="text-xl font-semibold text-gray-800">
-                {chatRooms.find(room => room.id === activeRoom)?.name}
-              </h2>
             </div>
             <div className="flex-1 overflow-y-auto p-4">
               <Chat

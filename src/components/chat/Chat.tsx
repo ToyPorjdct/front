@@ -1,17 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Send, User } from 'lucide-react'
-
-interface Message {
-  id: string
-  senderId: number
-  content: string
-  createdAt: string
-  profileImage: string
-}
+import { Send } from 'lucide-react'
+import { MessageType } from '../../types/MessageType'
 
 interface ChatProps {
   currentUserId: number
-  messages: Message[]
+  messages: MessageType[]
   onSendMessage: (content: string) => void
 }
 
@@ -23,6 +16,7 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (newMessage.trim() === '') return
+
     onSendMessage(newMessage)
     setNewMessage('')
   }
@@ -44,7 +38,7 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
         <h2 className="text-xl font-semibold">채팅</h2>
       </div>
 
-      {/* 내부 메시지 영역 */}
+      {/* Message List */}
       <div
         ref={messageContainerRef}
         className="p-4 space-y-4 flex-1"
@@ -74,6 +68,9 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
                   </div>
                 )}
                 <div className={`flex flex-col ${isMine ? 'items-end' : 'items-start'}`}>
+                  {!isMine && (
+                    <span className="text-sm font-semibold text-gray-700">{message.nickname}</span>
+                  )}
                   <div
                     className={`px-4 py-2 rounded-2xl max-w-xs break-words ${
                       isMine
@@ -94,9 +91,9 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Message Input */}
       <form onSubmit={handleSubmit} className="p-4 border-t bg-white">
         <div className="flex items-center space-x-2 w-full">
-          {/* 입력창 */}
           <input
             type="text"
             value={newMessage}
@@ -105,7 +102,6 @@ const Chat: React.FC<ChatProps> = ({ currentUserId, messages, onSendMessage }) =
             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             style={{ minWidth: '0', flexGrow: 1 }}
           />
-          {/* 전송 버튼 */}
           <button
             type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200 flex items-center"
