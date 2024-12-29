@@ -18,40 +18,27 @@ const ChatPage: React.FC = () => {
   // 채팅방 목록 조회
   const fetchChatRoomsData = async () => {
     if (!auth.accessToken) return
-    try {
-      const data = await getChatRooms(auth.accessToken)
-      if (data.status === 200) {
-        const rooms = data.result.map((room: any) => ({
-          id: room.roomId,
-          name: room.name,
-        }))
+    const data = await getChatRooms(auth.accessToken)
+    const rooms = data.result.map((room: any) => ({
+        id: room.roomId,
+        name: room.name,
+    }))
         setChatRooms(rooms)
-      } else {
-        console.error('Failed to fetch chat rooms: ', data.message)
-      }
-    } catch (error) {
-      console.error('Error fetching chat rooms:', error)
-    }
   }
 
   // 이전 메시지 조회
   const fetchMessagesData = async () => {
     if (!auth.accessToken || activeRoom === null || activeRoom <= 0) return
-
-    try {
-      const data = await getPreMessages(auth.accessToken, activeRoom)
-      const fetchedMessages = data.result.map((response: any) => ({
+    const data = await getPreMessages(auth.accessToken, activeRoom)
+    const fetchedMessages = data.result.map((response: any) => ({
         id: response.chatId,
         content: response.message,
         senderId: response.author.id,
         profileImage: response.author.profileImage,
         nickname: response.author.nickname,
         createdAt: response.createdAt,
-      }))
-      setMessages(fetchedMessages)
-    } catch (error) {
-      console.error('Error fetching messages:', error)
-    }
+    }))
+    setMessages(fetchedMessages)
   }
 
   useEffect(() => {
@@ -82,6 +69,12 @@ const ChatPage: React.FC = () => {
           }
         })
       },
+      onStompError: (frame) => {
+        console.error("STOMP error:", frame);
+        alert("세션이 만료되었습니다.");
+        window.location.href = "/";
+      },
+
       onDisconnect: () => {
         console.log('STOMP connection disconnected')
       },
@@ -110,21 +103,27 @@ const ChatPage: React.FC = () => {
   }
   const handleSendMessage = (content: string) => {
     if (clientRef.current && content.trim()) {
-      // 새로운 메시지 추가
-      const newMessage = { content };
-      setSentMessages((prevSent) => [...prevSent, newMessage]);
-  
-      // STOMP 메시지 발행
-      clientRef.current.publish({
-        destination: `/pub/chat.${activeRoom}`,
-        body: JSON.stringify({
-          message: content,
-          roomId: activeRoom, 
-        }),
-        headers: {
-          Authorization: `Bearer ${auth.accessToken}`,
-        },
-      });
+        try {
+            const newMessage = { content };
+            setSentMessages((prevSent) => [...prevSent, newMessage]);
+      
+            // STOMP 메시지 발행
+            clientRef.current.publish({
+              destination: `/pub/chat.${activeRoom}`,
+              body: JSON.stringify({
+                message: content,
+                roomId: activeRoom,
+              }),
+              headers: {
+                Authorization: `Bearer ${auth.accessToken}`,
+              },
+            });
+        } catch (error: any) {
+            if(error.response?.status === 401) {
+                alert('세션이 만료되었습니다.');
+                window.location.href = '/';
+            }
+        }
     }
   };
 
