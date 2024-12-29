@@ -22,9 +22,9 @@ export async function getPostList(): Promise<ApiResponse> {
  * 게시글 상세
  * @param id 게시글 ID
  */
-export async function getPostDetail(id: number): Promise<ApiResponse> {
+export async function getPostDetail(boardId: number): Promise<ApiResponse> {
   try {
-    const response = await axios.get(`${process.env.REACT_APP_SEVER_URL}/board/${id}`);
+    const response = await axios.get(`${process.env.REACT_APP_SEVER_URL}/board/${boardId}`);
     return response.data;
   } catch (error: any) {
     console.error('Error fetching post detail:', error);

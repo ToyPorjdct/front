@@ -2,24 +2,26 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Eye, Calendar, Users, MapPin, Clock } from 'lucide-react';
 import { PostDetailType } from '../../types/PostDetailType';
+import { useRecoilValue } from 'recoil';
+import { memberInfo } from '../../state/authState';
 
-interface TravelPostDetailProps {
-  post: PostDetailType;
-}
+const TravelPostDetail: React.FC<{ post: PostDetailType }> = ({ post }) => {
+  const auth = useRecoilValue(memberInfo);
 
-const TravelPostDetail: React.FC<TravelPostDetailProps> = ({ post }) => {
+  const isAuthor = auth && post.author.id === auth.id;
+
   return (
     <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
       <div className="relative mb-8">
-        <img alt={post.title} className="w-full h-[400px] object-cover"/>
+        <img alt={post.title} className="w-full h-[400px] object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
         <h1 className="absolute bottom-6 left-6 text-4xl font-bold text-white">{post.title}</h1>
       </div>
-      
+
       <div className="px-8 pb-8">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center">
-            <img src={post.author.profileImage} alt={post.author.nickname} className="w-12 h-12 rounded-full mr-4 border-2 border-blue-500"/>
+            <img src={post.author.profileImage} alt={post.author.nickname} className="w-12 h-12 rounded-full mr-4 border-2 border-blue-500" />
             <div>
               <span className="block text-lg font-semibold text-gray-800">{post.author.nickname}</span>
               <div className="flex items-center text-sm text-gray-500">
@@ -81,11 +83,26 @@ const TravelPostDetail: React.FC<TravelPostDetailProps> = ({ post }) => {
           >
             목록으로
           </Link>
-          <button 
-            className="px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-          >
-            채팅 하기
-          </button>
+          {isAuthor ? (
+            <div className="flex space-x-4">
+              <button 
+                className="px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-yellow-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
+              >
+                수정
+              </button>
+              <button 
+                className="px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-red-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+              >
+                삭제
+              </button>
+            </div>
+          ) : (
+            <button 
+              className="px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            >
+              채팅 하기
+            </button>
+          )}
         </div>
       </div>
     </div>

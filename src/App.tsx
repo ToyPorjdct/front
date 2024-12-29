@@ -27,7 +27,7 @@ const App: React.FC = () => {
           <Route path="/oauth2/redirect" element={<OAuth2RedirectPage />} />
           <Route path="/settings" element={<PrivateRoute> <EditProfilePage /> </PrivateRoute>} />
           <Route path="/create-post" element={<PrivateRoute> <CreatePost /></PrivateRoute>} />
-          <Route path="/posts/:id" element={<PostDetailPage />} />
+          <Route path="/posts/:boardId" element={<PostDetailPage />} />
           <Route path="/chat" element={<ChatPage />} />
         </Routes>
         <Footer />

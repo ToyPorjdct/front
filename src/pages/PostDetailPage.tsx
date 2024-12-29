@@ -13,12 +13,11 @@ interface Comment {
 }
 
 const PostDetailPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-
+  const { boardId } = useParams<{ boardId: string }>();
   const [post, setPost] = useState<PostDetailType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [comments, setComments] = useState<Comment[]>([
+  const [comments] = useState<Comment[]>([
     {
       id: 1,
       author: '여행자A',
@@ -33,11 +32,12 @@ const PostDetailPage: React.FC = () => {
     },
   ]);
 
+
   useEffect(() => {
     const fetchPostDetail = async () => {
       try {
-        if (id) {
-          const postData = await getPostDetail(Number(id));
+        if (boardId) {
+          const postData = await getPostDetail(Number(boardId));
           setPost(postData.result);
           setLoading(false);
         }
@@ -48,25 +48,21 @@ const PostDetailPage: React.FC = () => {
     };
 
     fetchPostDetail();
-  }, [id]);
+  }, [boardId]);
 
-  // 로딩 중에는 로딩 메시지 또는 로딩 스피너를 표시
   if (loading) {
     return <div>로딩 중...</div>;
   }
 
-  // 에러가 발생한 경우 오류 메시지를 표시
   if (error) {
     return <div>{error}</div>;
   }
 
+
   return (
     <div className="bg-gray-100 min-h-screen py-12">
       <div className="max-w-4xl mx-auto">
-        {/* 게시글이 로딩된 경우에만 TravelPostDetail을 렌더링 */}
-        {post && <TravelPostDetail post={post} />}
-        
-        {/* 댓글이 로딩되었으므로, 기본 댓글 데이터를 렌더링 */}
+        {post && <TravelPostDetail post={post}/>}
         {comments.length > 0 && <Comments postId={post?.id ?? 0} comments={comments} />}
       </div>
     </div>
