@@ -1,11 +1,12 @@
 import axios from 'axios';
+import api from './api';
 
 /**
  * 채팅방 목록 조회
  */
 export const getChatRooms = async (accessToken: string) => {
   try {
-    const response = await axios.get(`${process.env.REACT_APP_SEVER_URL}/chat`, {
+    const response = await api.get(`${process.env.REACT_APP_SEVER_URL}/chat`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
       },
@@ -21,7 +22,7 @@ export const getChatRooms = async (accessToken: string) => {
  */
 export const getPreMessages = async (accessToken: string, activeRoom: number) => {
   try {
-    const response = await axios.get(`${process.env.REACT_APP_SEVER_URL}/chat/room/${activeRoom}`, {
+    const response = await api.get(`${process.env.REACT_APP_SEVER_URL}/chat/room/${activeRoom}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
       },

@@ -55,7 +55,7 @@ export async function createPost(token: string, payload: PostFormType): Promise<
 
 export async function deletePost(accessToken: string, boardId: number): Promise<ApiResponse> {
   try {
-    const response = await axios.delete(`${process.env.REACT_APP_SEVER_URL}/board/${boardId}`, {
+    const response = await api.delete(`${process.env.REACT_APP_SEVER_URL}/board/${boardId}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
       },
