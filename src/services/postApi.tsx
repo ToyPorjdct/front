@@ -48,3 +48,20 @@ export async function createPost(token: string, payload: PostFormType): Promise<
     throw new Error(error.message);
   }
 }
+
+/**
+ * 게시글 삭제
+ */
+
+export async function deletePost(accessToken: string, boardId: number): Promise<ApiResponse> {
+  try {
+    const response = await axios.delete(`${process.env.REACT_APP_SEVER_URL}/board/${boardId}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+}

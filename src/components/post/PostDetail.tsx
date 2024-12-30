@@ -4,10 +4,12 @@ import { Heart, Eye, Calendar, Users, MapPin, Clock } from 'lucide-react';
 import { PostDetailType } from '../../types/PostDetailType';
 import { useRecoilValue } from 'recoil';
 import { memberInfo } from '../../state/authState';
+import BoardDeleteButton from './BoardDeleteButton';
+
 
 const TravelPostDetail: React.FC<{ post: PostDetailType }> = ({ post }) => {
   const auth = useRecoilValue(memberInfo);
-
+  
   const isAuthor = auth && post.author.id === auth.id;
 
   return (
@@ -90,11 +92,7 @@ const TravelPostDetail: React.FC<{ post: PostDetailType }> = ({ post }) => {
               >
                 수정
               </button>
-              <button 
-                className="px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-red-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-              >
-                삭제
-              </button>
+              <BoardDeleteButton boardId={post.id}/>
             </div>
           ) : (
             <button 
