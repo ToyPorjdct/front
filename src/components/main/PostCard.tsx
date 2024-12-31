@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faComment } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom'; // React Router Link 추가
+import { Link } from 'react-router-dom';
 import { PostType } from '../../types/PostType';
 
 
