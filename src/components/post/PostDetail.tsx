@@ -5,6 +5,7 @@ import { PostDetailType } from '../../types/PostDetailType';
 import { useRecoilValue } from 'recoil';
 import { memberInfo } from '../../state/authState';
 import BoardDeleteButton from './BoardDeleteButton';
+import ChatButton from './ChatButton';
 
 
 const TravelPostDetail: React.FC<{ post: PostDetailType }> = ({ post }) => {
@@ -95,11 +96,7 @@ const TravelPostDetail: React.FC<{ post: PostDetailType }> = ({ post }) => {
               <BoardDeleteButton boardId={post.id}/>
             </div>
           ) : (
-            <button 
-              className="px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            >
-              채팅 하기
-            </button>
+            <ChatButton boardId={post.id}/>
           )}
         </div>
       </div>

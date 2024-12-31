@@ -1,4 +1,3 @@
-import axios from 'axios';
 import api from './api';
 
 /**
@@ -33,3 +32,22 @@ export const getPreMessages = async (accessToken: string, activeRoom: number) =>
   }
 };
 
+/**
+ * 채팅방 생성
+ */
+export const createChatRoom = async (accessToken: string, boardId: number) => {
+  try {
+    const response = await api.post(
+      `${process.env.REACT_APP_SEVER_URL}/chat`,
+      { boardId },
+      {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to create chat room');
+  }
+};
