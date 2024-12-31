@@ -4,11 +4,8 @@ import { faEye, faComment } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom'; // React Router Link 추가
 import { PostType } from '../../types/PostType';
 
-interface PostCardProps {
-  post: PostType;
-}
 
-const PostCard: React.FC<PostCardProps> = ({ post }) => {
+const PostCard: React.FC<{ post: PostType }> = ({ post }) => {
   return (
     <Link to={`/posts/${post.id}`} className="block"> {/* 전체 카드 클릭 시 이동 */}
       <div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 ease-in-out transform hover:scale-105 border border-gray-300">

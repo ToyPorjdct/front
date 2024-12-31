@@ -1,4 +1,3 @@
-// LogoutButton.tsx
 import React from 'react';
 import { useSetRecoilState } from 'recoil';
 import { memberInfo } from '../../state/authState';

@@ -8,12 +8,7 @@ interface Comment {
   createdAt: string;
 }
 
-interface CommentsProps {
-  postId: number;
-  comments: Comment[];
-}
-
-const Comments: React.FC<CommentsProps> = ({ postId, comments: initialComments }) => {
+const Comments: React.FC<{postId: number, comments: Comment[]}> = ({ postId, comments: initialComments }) => {
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [newComment, setNewComment] = useState('');
 

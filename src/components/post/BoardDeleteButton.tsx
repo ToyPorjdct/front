@@ -4,11 +4,7 @@ import { memberInfo } from '../../state/authState';
 import { useNavigate } from 'react-router-dom';
 import { deletePost } from '../../services/postApi';
 
-interface BoardDeleteButtonProps {
-  boardId: number;
-}
-
-const DeleteButton: React.FC<BoardDeleteButtonProps> = ({ boardId }) => {
+const DeleteButton: React.FC<{ boardId: number }> = ({ boardId }) => {
   const navigate = useNavigate();
   const auth = useRecoilValue(memberInfo);
 
