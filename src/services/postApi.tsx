@@ -65,3 +65,16 @@ export async function deletePost(accessToken: string, boardId: number): Promise<
     throw new Error(error.response?.data?.message || error.message);
   }
 }
+
+/**
+ * 댓글 조회
+ */
+export async function getComments(boardId: number): Promise<ApiResponse> {
+  try {
+    const response = await axios.get(`${process.env.REACT_APP_SEVER_URL}/board/${boardId}/comment`);
+    return response.data;
+  } catch (error: any) {
+    console.error('Error fetching comments:', error);
+    throw new Error(error.message);
+  }
+}

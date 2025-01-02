@@ -1,6 +1,6 @@
 // pages/MainPage.tsx
 import React, { useEffect, useState } from 'react';
-import PostCard from '../components/main/PostCard';
+import PostCard from '../components/post/PostCard';
 import DestinationCard from '../components/main/DestinationCard';
 import { PostType } from '../types/PostType';
 import { getPostList } from '../services/postApi';

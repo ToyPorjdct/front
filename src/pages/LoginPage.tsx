@@ -1,4 +1,4 @@
-import LoginForm from '../components/form/LoginForm';
+import LoginForm from '../components/auth/LoginForm';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';

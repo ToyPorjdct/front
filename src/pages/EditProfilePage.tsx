@@ -1,5 +1,5 @@
 import React from 'react';
-import EditProfileForm from '../components/form/EditProfileForm';
+import EditProfileForm from '../components/auth/EditProfileForm';
 
 const EditProfilePage: React.FC = () => {
   return (

@@ -4,7 +4,7 @@ import { Heart, Eye, Calendar, Users, MapPin, Clock } from 'lucide-react';
 import { PostDetailType } from '../../types/PostDetailType';
 import { useRecoilValue } from 'recoil';
 import { memberInfo } from '../../state/authState';
-import BoardDeleteButton from './BoardDeleteButton';
+import PostDeleteButton from './PostDeleteButton';
 import ChatButton from './ChatButton';
 
 
@@ -93,7 +93,7 @@ const TravelPostDetail: React.FC<{ post: PostDetailType }> = ({ post }) => {
               >
                 수정
               </button>
-              <BoardDeleteButton boardId={post.id}/>
+              <PostDeleteButton boardId={post.id}/>
             </div>
           ) : (
             <ChatButton boardId={post.id}/>

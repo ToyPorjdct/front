@@ -1,30 +1,13 @@
 import React, { useState } from 'react';
-import { User, MessageSquare, Send } from 'lucide-react';
+import { MessageSquare, Send } from 'lucide-react';
+import { CommentType } from '../../types/CommentType';
 
-interface Comment {
-  id: number;
-  author: string;
-  content: string;
-  createdAt: string;
-}
+const Comments: React.FC<{ comments: CommentType[], postAuthorId: number }> = ({ comments: initialComments, postAuthorId }) => {
+  const [comments, setComments] = useState<CommentType[]>(initialComments);
+  const [newComment, setNewComment] = useState<string>('');
 
-const Comments: React.FC<{postId: number, comments: Comment[]}> = ({ postId, comments: initialComments }) => {
-  const [comments, setComments] = useState<Comment[]>(initialComments);
-  const [newComment, setNewComment] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (newComment.trim() === '') return;
-
-    const comment: Comment = {
-      id: comments.length + 1,
-      author: '현재 사용자',
-      content: newComment,
-      createdAt: new Date().toISOString(),
-    };
-
-    setComments([...comments, comment]);
-    setNewComment('');
   };
 
   return (
@@ -33,7 +16,7 @@ const Comments: React.FC<{postId: number, comments: Comment[]}> = ({ postId, com
         <MessageSquare className="w-6 h-6 mr-2 text-blue-500" />
         댓글 ({comments.length})
       </h2>
-      
+
       <form onSubmit={handleSubmit} className="mb-8">
         <div className="flex items-center space-x-4">
           <textarea
@@ -57,9 +40,14 @@ const Comments: React.FC<{postId: number, comments: Comment[]}> = ({ postId, com
         {comments.map((comment) => (
           <div key={comment.id} className="bg-gray-50 p-4 rounded-lg">
             <div className="flex items-center mb-2">
-              <User className="w-5 h-5 mr-2 text-gray-500" />
-              <span className="font-semibold text-gray-800">{comment.author}</span>
-              <span className="ml-2 text-sm text-gray-500">{new Date(comment.createdAt).toLocaleDateString()}</span>
+              <img src={comment.author.profileImage} alt={comment.author.nickname} className="w-8 h-8 rounded-full" />
+              <span className="font-semibold text-gray-800">{comment.author.nickname}</span>
+              <span className="ml-2 text-sm text-gray-500">{comment.createdAt}</span>
+              {comment.author.id === postAuthorId && (
+              <span className="ml-2 text-xs text-red-500 border-2 border-red-500 rounded-full py-0.5 px-2 font-semibold">
+              작성자
+              </span>
+            )}
             </div>
             <p className="text-gray-700">{comment.content}</p>
           </div>

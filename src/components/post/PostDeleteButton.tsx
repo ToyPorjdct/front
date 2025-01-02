@@ -4,7 +4,7 @@ import { memberInfo } from '../../state/authState';
 import { useNavigate } from 'react-router-dom';
 import { deletePost } from '../../services/postApi';
 
-const DeleteButton: React.FC<{ boardId: number }> = ({ boardId }) => {
+const PostDeleteButton: React.FC<{ boardId: number }> = ({ boardId }) => {
   const navigate = useNavigate();
   const auth = useRecoilValue(memberInfo);
 
@@ -30,4 +30,4 @@ const DeleteButton: React.FC<{ boardId: number }> = ({ boardId }) => {
   );
 };
 
-export default DeleteButton;
+export default PostDeleteButton;

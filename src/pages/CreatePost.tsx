@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateTravelPostForm from '../components/form/CreatePostForm';
+import CreateTravelPostForm from '../components/post/CreatePostForm';
 
 const CreateTravelPostPage: React.FC = () => {
   return (
