@@ -78,3 +78,19 @@ export async function getComments(boardId: number): Promise<ApiResponse> {
     throw new Error(error.message);
   }
 }
+
+/**
+ * 댓글 작성
+ */
+export async function createComment(token: string, boardId: number, content: string): Promise<ApiResponse> {
+  try {
+    const response = await api.post(`${process.env.REACT_APP_SEVER_URL}/board/${boardId}/comment`, { content }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}

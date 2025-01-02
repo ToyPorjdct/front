@@ -1,14 +1,31 @@
 import React, { useState } from 'react';
 import { MessageSquare, Send } from 'lucide-react';
 import { CommentType } from '../../types/CommentType';
+import { createComment } from '../../services/postApi';
+import { useRecoilValue } from 'recoil';
+import { memberInfo } from '../../state/authState';
+import { getComments } from '../../services/postApi';
 
-const Comments: React.FC<{ comments: CommentType[], postAuthorId: number }> = ({ comments: initialComments, postAuthorId }) => {
+const Comments: React.FC<{ comments: CommentType[], postAuthorId: number, boardId: number }> = ({ comments: initialComments, postAuthorId, boardId }) => {
   const [comments, setComments] = useState<CommentType[]>(initialComments);
-  const [newComment, setNewComment] = useState<string>('');
+  const [content, setContent] = useState<string>('');
+  const auth = useRecoilValue(memberInfo);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    if (content.trim() === '') return;
+  
+    try {
+      await createComment(auth.accessToken, boardId, content);
+      const commentsData = await getComments(Number(boardId));
+      setComments(commentsData.result);
+      setContent('');
+    } catch (error) {
+      alert('댓글 작성에 실패했습니다.');
+    }
   };
+  
 
   return (
     <div className="bg-white rounded-3xl shadow-lg p-8 mt-8">
@@ -20,8 +37,8 @@ const Comments: React.FC<{ comments: CommentType[], postAuthorId: number }> = ({
       <form onSubmit={handleSubmit} className="mb-8">
         <div className="flex items-center space-x-4">
           <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
             placeholder="댓글을 입력하세요..."
             className="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
             rows={3}
@@ -44,10 +61,10 @@ const Comments: React.FC<{ comments: CommentType[], postAuthorId: number }> = ({
               <span className="font-semibold text-gray-800">{comment.author.nickname}</span>
               <span className="ml-2 text-sm text-gray-500">{comment.createdAt}</span>
               {comment.author.id === postAuthorId && (
-              <span className="ml-2 text-xs text-red-500 border-2 border-red-500 rounded-full py-0.5 px-2 font-semibold">
-              작성자
-              </span>
-            )}
+                <span className="ml-2 text-xs text-red-500 border-2 border-red-500 rounded-full py-0.5 px-2 font-semibold">
+                  작성자
+                </span>
+              )}
             </div>
             <p className="text-gray-700">{comment.content}</p>
           </div>
