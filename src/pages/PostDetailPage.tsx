@@ -63,7 +63,7 @@ const PostDetailPage: React.FC = () => {
     <div className="bg-gray-100 min-h-screen py-12">
       <div className="max-w-4xl mx-auto">
         {post && <TravelPostDetail post={post} />}
-        {post && comments.length > 0 && (<Comments comments={comments} postAuthorId={post.author.id} />)}
+        {post && (<Comments comments={comments} postAuthorId={post.author.id} />)}
       </div>
     </div>
   );
